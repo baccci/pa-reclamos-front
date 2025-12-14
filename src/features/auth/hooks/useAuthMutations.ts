@@ -1,3 +1,4 @@
+'use client'
 import { useMutation } from "@tanstack/react-query"
 import { useAuthStore } from "@/stores/auth"
 import type {

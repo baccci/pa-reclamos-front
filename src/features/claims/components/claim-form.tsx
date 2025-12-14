@@ -3,13 +3,22 @@
 import type React from "react"
 
 import { useState } from "react"
-import type { CreateClaimPayload, ClaimType, Priority, Criticality } from "../types/claim"
-import { CLAIM_TYPES, PRIORITY_OPTIONS, CRITICALITY_OPTIONS } from "../constants/claim-options"
-import { FormInput } from "./form/form-input"
-import { FormTextarea } from "./form/form-textarea"
-import { FormSelect } from "./form/form-select"
-import { FormRadioGroup } from "./form/form-radio-group"
+import {
+  CLAIM_TYPES,
+  CRITICALITY_OPTIONS,
+  PRIORITY_OPTIONS,
+} from "../constants/claim-options"
+import type {
+  ClaimType,
+  CreateClaimPayload,
+  Criticality,
+  Priority,
+} from "../types/claim"
 import { FormFileUpload } from "./form/form-file-upload"
+import { FormInput } from "./form/form-input"
+import { FormRadioGroup } from "./form/form-radio-group"
+import { FormSelect } from "./form/form-select"
+import { FormTextarea } from "./form/form-textarea"
 
 const INITIAL_STATE = {
   title: "",
@@ -48,8 +57,12 @@ export function ClaimForm() {
   return (
     <div className="bg-card rounded-2xl p-8 max-w-2xl mx-auto">
       <div className="text-center mb-8">
-        <h1 className="text-2xl font-bold text-foreground mb-2">Registrar Nuevo Reclamo</h1>
-        <p className="text-muted-foreground">Complete el formulario para registrar su reclamo</p>
+        <h1 className="text-2xl font-bold text-foreground mb-2">
+          Registrar Nuevo Reclamo
+        </h1>
+        <p className="text-muted-foreground">
+          Complete el formulario para registrar su reclamo
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -57,7 +70,9 @@ export function ClaimForm() {
           label="Título"
           id="title"
           value={formData.title}
-          onChange={(value) => setFormData((prev) => ({ ...prev, title: value }))}
+          onChange={(value) =>
+            setFormData((prev) => ({ ...prev, title: value }))
+          }
           placeholder="Ingrese un título descriptivo"
           required
         />
@@ -66,7 +81,9 @@ export function ClaimForm() {
           label="Descripción Detallada"
           id="description"
           value={formData.description}
-          onChange={(value) => setFormData((prev) => ({ ...prev, description: value }))}
+          onChange={(value) =>
+            setFormData((prev) => ({ ...prev, description: value }))
+          }
           placeholder="Describa su reclamo con el mayor detalle posible"
           required
           rows={4}
@@ -76,7 +93,9 @@ export function ClaimForm() {
           label="Tipo de Reclamo"
           id="type"
           value={formData.type}
-          onChange={(value) => setFormData((prev) => ({ ...prev, type: value as ClaimType }))}
+          onChange={(value) =>
+            setFormData((prev) => ({ ...prev, type: value as ClaimType }))
+          }
           options={CLAIM_TYPES}
           required
         />
@@ -86,7 +105,9 @@ export function ClaimForm() {
             label="Prioridad"
             name="priority"
             value={formData.priority}
-            onChange={(value) => setFormData((prev) => ({ ...prev, priority: value as Priority }))}
+            onChange={(value) =>
+              setFormData((prev) => ({ ...prev, priority: value as Priority }))
+            }
             options={PRIORITY_OPTIONS}
             required
           />
@@ -95,7 +116,12 @@ export function ClaimForm() {
             label="Criticidad"
             name="criticality"
             value={formData.criticality}
-            onChange={(value) => setFormData((prev) => ({ ...prev, criticality: value as Criticality }))}
+            onChange={(value) =>
+              setFormData((prev) => ({
+                ...prev,
+                criticality: value as Criticality,
+              }))
+            }
             options={CRITICALITY_OPTIONS}
             required
           />
@@ -104,7 +130,9 @@ export function ClaimForm() {
         <FormFileUpload
           label="Archivos Adjuntos"
           files={formData.attachments}
-          onChange={(files) => setFormData((prev) => ({ ...prev, attachments: files }))}
+          onChange={(files) =>
+            setFormData((prev) => ({ ...prev, attachments: files }))
+          }
         />
 
         <button

@@ -7,9 +7,9 @@
   /* Dark mode design */
   --background: oklch(0.08 0.01 250);
   --foreground: oklch(0.98 0 0);
-  --card: oklch(0.14 0.01 250);
+  --card: oklch(0.2017 0.01 250);
   --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.14 0.01 250);
+  --popover: oklch(0.2017 0.01 250);
   --popover-foreground: oklch(0.98 0 0);
   --primary: oklch(0.55 0.22 260);
   --primary-foreground: oklch(0.98 0 0);
@@ -86,6 +86,7 @@
   * {
     @apply outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
