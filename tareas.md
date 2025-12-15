@@ -11,7 +11,8 @@ src/
 ├── components/            # Componentes React globales/compartidos
 ├── constants/             # Constantes globales
 ├── hooks/                 # Custom hooks globales
-├── services/              # Servicios API globales
+├── lib/                   # Librerías y utilidades de bajo nivel
+│   └── api/              # API Client Global (ver sección API Client)
 ├── stores/                # Estado global compartido
 ├── types/                 # Tipos TypeScript globales
 ├── utils/                 # Utilidades y helpers globales
@@ -131,6 +132,172 @@ src/features/dashboard/
 - **Tareas de Administrador** → `/src/features/dashboard/admin/`
 - **Autenticación/Registro** → `/src/features/auth/`
 - **Código compartido/global** → `/src/[carpeta]` (components, constants, hooks, services, stores, types, utils)
+
+---
+
+## 🔌 API Client Global - **MUY IMPORTANTE**
+
+### ¿Qué es?
+
+El **API Client Global** es un objeto único (`api`) que centraliza todas las llamadas al backend. Está ubicado en `/src/lib/api/index.ts` y combina los módulos de API de todas las features usando el patrón **barrel export**.
+
+### Estructura del API Client
+
+El objeto `api` está organizado por **funcionalidad**, no por tipo de usuario:
+
+```typescript
+api/
+├── auth/                    # Autenticación y registro
+│   ├── login()
+│   ├── registro()
+│   └── recuperarPassword()
+├── reclamos/               # Funcionalidades de reclamos (combinado)
+│   ├── crear()             # Cliente
+│   ├── listarMios()        # Cliente
+│   ├── listarPorArea()     # Empleado
+│   ├── actualizarEstado()  # Empleado
+│   ├── reasignarArea()     # Empleado
+│   └── obtener()            # Compartido
+├── proyectos/              # Funcionalidades de proyectos
+├── clientes/               # Funcionalidades de clientes
+├── areas/                  # Funcionalidades de áreas (admin)
+└── usuarios/               # Funcionalidades de usuarios (admin)
+```
+
+### ¿Cómo Funciona?
+
+1. **Cada feature exporta su módulo de API** desde su carpeta `services/`:
+   ```typescript
+   // src/features/dashboard/cliente/services/reclamos-api.ts
+   export const reclamosClienteApi = {
+     crear: (data) => { /* ... */ },
+     listarMios: () => { /* ... */ },
+     modificar: (id, data) => { /* ... */ }
+   }
+   ```
+
+2. **El archivo central importa y combina** todos los módulos:
+   ```typescript
+   // src/lib/api/index.ts
+   import { reclamosClienteApi } from '@/features/dashboard/cliente/services/reclamos-api'
+   import { reclamosEmpleadoApi } from '@/features/dashboard/empleado/services/reclamos-api'
+   
+   export const api = {
+     reclamos: {
+       ...reclamosClienteApi,
+       ...reclamosEmpleadoApi,
+     }
+   }
+   ```
+
+3. **En cualquier parte de la app, importas y usas**:
+   ```typescript
+   import { api } from '@/lib/api'
+   
+   // Cliente creando reclamo
+   await api.reclamos.crear(data)
+   
+   // Empleado actualizando estado
+   await api.reclamos.actualizarEstado(id, "EN_PROCESO", "En revisión")
+   ```
+
+### ⚠️ Cómo Agregar Nuevas APIs
+
+**Paso 1**: Crea el módulo de API en la feature correspondiente:
+
+```typescript
+// src/features/dashboard/cliente/services/proyectos-api.ts
+export const proyectosClienteApi = {
+  listar: async () => {
+    // Lógica de llamada al backend
+  },
+  crear: async (data) => {
+    // Lógica de llamada al backend
+  },
+  // ... más métodos
+}
+```
+
+**Paso 2**: Importa el módulo en `/src/lib/api/index.ts`:
+
+```typescript
+// src/lib/api/index.ts
+import { proyectosClienteApi } from '@/features/dashboard/cliente/services/proyectos-api'
+```
+
+**Paso 3**: Agrega el módulo al objeto `api`:
+
+```typescript
+export const api = {
+  // ... otros módulos
+  proyectos: {
+    ...proyectosClienteApi,
+    // Si hay métodos de otros roles, agrégalos aquí también
+  },
+}
+```
+
+**Paso 4**: Usa la API en tu código:
+
+```typescript
+import { api } from '@/lib/api'
+
+const proyectos = await api.proyectos.listar()
+```
+
+### 📋 Ejemplos por Tipo de Usuario
+
+**Cliente:**
+```typescript
+// Crear reclamo
+await api.reclamos.crear(data)
+
+// Listar mis reclamos
+await api.reclamos.listarMios()
+
+// Listar mis proyectos
+await api.proyectos.listar()
+```
+
+**Empleado:**
+```typescript
+// Listar reclamos de mi área
+await api.reclamos.listarPorArea()
+
+// Actualizar estado de reclamo
+await api.reclamos.actualizarEstado(id, "EN_PROCESO", "En revisión")
+
+// Listar clientes
+await api.clientes.listar()
+```
+
+**Admin:**
+```typescript
+// Listar todas las áreas
+await api.areas.listar()
+
+// Crear área
+await api.areas.crear(data)
+
+// Listar usuarios
+await api.usuarios.listar()
+```
+
+### ✅ Ventajas de Esta Arquitectura
+
+1. **Un solo lugar** para todas las llamadas API
+2. **Sin duplicación** - cada método se define una vez
+3. **Fácil de encontrar** - `api.reclamos.crear()` es intuitivo
+4. **Escalable** - agregar nuevos métodos es simple
+5. **Type-safe** - TypeScript ayuda con autocompletado
+6. **Mantenible** - cambios en un solo lugar
+
+### 🚨 Reglas Importantes
+
+- **NUNCA** hagas llamadas directas al backend desde componentes
+- **SIEMPRE** usa el objeto `api` global
+- **Organiza** los métodos por funcionalidad, no por rol
+- **Combina** métodos de diferentes roles en el mismo namespace cuando sea apropiado (ej: `api.reclamos.*`)
 
 ---
 
