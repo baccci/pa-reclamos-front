@@ -21,10 +21,58 @@ const Icons = {
       />
     </svg>
   ),
+} as const
+
+type NavItem = {
+  label: string
+  href: string
+  icon: keyof typeof Icons
+  section?: "cliente" | "empleado" | "base"
+}
+
+const EXTRA_CLIENTE: NavItem[] = [
+  { label: "Cliente • Mis reclamos", href: "/cliente/reclamos", icon: "list", section: "cliente" },
+  // Si no existe, borrá esta línea:
+  { label: "Cliente • Mis proyectos", href: "/cliente/proyectos", icon: "list", section: "cliente" },
+]
+
+const EXTRA_EMPLEADO: NavItem[] = [
+  { label: "Empleado • Reclamos", href: "/empleado/reclamos", icon: "list", section: "empleado" },
+  { label: "Empleado • Clientes", href: "/empleado/clientes", icon: "list", section: "empleado" },
+]
+
+function isActivePath(pathname: string, href: string) {
+  return pathname === href || pathname.startsWith(href + "/")
+}
+
+function dedupeByHref(items: NavItem[]) {
+  const seen = new Set<string>()
+  const out: NavItem[] = []
+  for (const it of items) {
+    if (seen.has(it.href)) continue
+    seen.add(it.href)
+    out.push(it)
+  }
+  return out
+}
+
+function normalizeNavItems(input: Array<{ label: string; href: string; icon: string }>): NavItem[] {
+  // Si tu NAVIGATION_ITEMS tiene icon strings que no existen, cae a "list"
+  return input.map((i) => ({
+    label: i.label,
+    href: i.href,
+    icon: (i.icon in Icons ? (i.icon as keyof typeof Icons) : "list"),
+    section: "base",
+  }))
 }
 
 export function Sidebar() {
   const pathname = usePathname()
+
+  const base = normalizeNavItems(NAVIGATION_ITEMS as any)
+
+  // ✅ Siempre mostramos Cliente + Empleado para navegar sin Auth
+  const combinedItems = dedupeByHref([...base, ...EXTRA_CLIENTE, ...EXTRA_EMPLEADO])
 
   return (
     <aside className="w-64 bg-card h-screen flex flex-col">
@@ -33,27 +81,32 @@ export function Sidebar() {
         <p className="text-sm text-muted-foreground">Sistema de gestión</p>
       </div>
 
-      <nav className="flex-1 px-4">
+      <nav className="flex-1 px-4 overflow-auto">
         <ul className="space-y-2">
-          {NAVIGATION_ITEMS.map((item) => {
-            const isActive = pathname === item.href
+          {combinedItems.map((item) => {
+            const active = isActivePath(pathname, item.href)
+
             return (
               <li key={item.href}>
                 <Link
-                  href={item.href}
+                  href={{ pathname: item.href }}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                    isActive
+                    active
                       ? "bg-primary text-primary-foreground"
                       : "text-muted-foreground hover:bg-muted hover:text-foreground"
                   }`}
                 >
-                  {Icons[item.icon as keyof typeof Icons]}
+                  {Icons[item.icon]}
                   <span className="font-medium">{item.label}</span>
                 </Link>
               </li>
             )
           })}
         </ul>
+
+        <div className="mt-4 text-xs text-muted-foreground px-4">
+          * Se muestran accesos de Cliente y Empleado para navegar sin login (Auth lo hace Salvador).
+        </div>
       </nav>
 
       <div className="p-4 mt-auto">
