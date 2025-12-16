@@ -3,7 +3,7 @@
 import { useClaims } from "../hooks/use-claims"
 import { ClaimCard } from "./claim-card"
 
-export function ClaimList() {
+export function ListaReclamos() {
   const { claims, isLoading, error } = useClaims()
 
   if (isLoading) {

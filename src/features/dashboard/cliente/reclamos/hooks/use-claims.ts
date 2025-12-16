@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
-import type { Claim, CreateClaimPayload } from "../types/claim"
+import { useCallback, useEffect, useState } from "react"
 import { claimService } from "../services/claim-service"
+import type { Claim, CreateClaimPayload } from "../types/claim"
 
 export function useClaims() {
   const [claims, setClaims] = useState<Claim[]>([])

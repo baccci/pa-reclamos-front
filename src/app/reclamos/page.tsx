@@ -1,10 +1,10 @@
 import { MainLayout } from "@/components/layout/main-layout"
-import { ClaimList } from "@/features/dashboard/cliente/reclamos/components/claim-list"
+import { ListaReclamos } from "@/features/dashboard/cliente/reclamos/components/lista-reclamos"
 
 export default function ClaimsPage() {
   return (
     <MainLayout>
-      <ClaimList />
+      <ListaReclamos />
     </MainLayout>
   )
 }

@@ -1,0 +1,1236 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "AppController_getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "App"
+        ]
+      }
+    },
+    "/proyecto": {
+      "post": {
+        "description": "Crea un nuevo proyecto en la base de datos utilizando Prisma. Devuelve el proyecto creado.",
+        "operationId": "ProyectoController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Datos necesarios para crear el proyecto, además de estar logueado en la página.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProyectoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Proyecto creado correctamente."
+          },
+          "400": {
+            "description": "Datos inválidos proporcionados."
+          },
+          "500": {
+            "description": "Error interno al crear el proyecto."
+          }
+        },
+        "summary": "Crea un nuevo proyecto.",
+        "tags": [
+          "Proyecto"
+        ]
+      },
+      "get": {
+        "description": "Devuelve un listado de todos los proyectos registrados.",
+        "operationId": "ProyectoController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Listado de proyectos obtenido correctamente."
+          },
+          "500": {
+            "description": "Error interno del servidor al obtener los proyectos."
+          }
+        },
+        "summary": "Obtiene todos los proyectos de un cliente.",
+        "tags": [
+          "Proyecto"
+        ]
+      }
+    },
+    "/proyecto/{id}": {
+      "get": {
+        "description": "Busca un proyecto en la base de datos utilizando el ID proporcionado.",
+        "operationId": "ProyectoController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID del proyecto a buscar.",
+            "schema": {
+              "example": "68f0602ae29a2c2e0ff28625",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Proyecto encontrado y devuelto correctamente."
+          },
+          "404": {
+            "description": "No se encontró un proyecto con el ID proporcionado."
+          },
+          "500": {
+            "description": "Error interno al buscar el proyecto."
+          }
+        },
+        "summary": "Obtiene un proyecto por su ID.",
+        "tags": [
+          "Proyecto"
+        ]
+      },
+      "put": {
+        "description": "Modifica los datos de un proyecto existente utilizando su ID.",
+        "operationId": "ProyectoController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID del proyecto a actualizar.",
+            "schema": {
+              "example": "68f0602ae29a2c2e0ff28628",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Datos a actualizar en el proyecto.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProyectoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Proyecto actualizado correctamente."
+          },
+          "400": {
+            "description": "Datos inválidos proporcionados."
+          },
+          "404": {
+            "description": "No existe un proyecto con ese ID."
+          },
+          "500": {
+            "description": "Error interno al actualizar el proyecto."
+          }
+        },
+        "summary": "Actualiza un proyecto.",
+        "tags": [
+          "Proyecto"
+        ]
+      },
+      "delete": {
+        "description": "Elimina un proyecto mediante su ID.",
+        "operationId": "ProyectoController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID del proyecto a eliminar.",
+            "schema": {
+              "example": "68f0602ae29a2c2e0ff28625",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Proyecto eliminado correctamente (retorna true)."
+          },
+          "404": {
+            "description": "No existe un proyecto con ese ID."
+          },
+          "500": {
+            "description": "Error interno al eliminar el proyecto."
+          }
+        },
+        "summary": "Elimina un proyecto.",
+        "tags": [
+          "Proyecto"
+        ]
+      }
+    },
+    "/proyecto/tipo-proyecto/{id}": {
+      "get": {
+        "description": "Busca proyectos en la base de datos utilizando el ID del tipo de proyecto proporcionado.",
+        "operationId": "ProyectoController_findByTipoProyecto",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID del tipo de proyecto a buscar.",
+            "schema": {
+              "example": "68f0602ae29a2c2e0ff28625",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Proyectos encontrados y devueltos correctamente."
+          },
+          "404": {
+            "description": "No se encontraron proyectos con el ID del tipo de proyecto proporcionado."
+          },
+          "500": {
+            "description": "Error interno al buscar los proyectos."
+          }
+        },
+        "summary": "Obtiene proyectos por tipo de proyecto.",
+        "tags": [
+          "Proyecto"
+        ]
+      }
+    },
+    "/tipo-proyecto": {
+      "get": {
+        "description": "Devuelve un listado completo de todos los tipos de proyecto registrados en la base de datos.",
+        "operationId": "TipoProyectoController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Listado obtenido correctamente."
+          },
+          "500": {
+            "description": "Error interno del servidor al obtener la lista de tipos de proyecto."
+          }
+        },
+        "summary": "Obtiene todos los tipos de proyecto.",
+        "tags": [
+          "TipoProyecto"
+        ]
+      }
+    },
+    "/tipo-proyecto/{id}": {
+      "get": {
+        "description": "Busca y devuelve un tipo de proyecto utilizando el ID proporcionado. Si no existe, retorna un error.",
+        "operationId": "TipoProyectoController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID del tipo de proyecto (ObjectId de MongoDB).",
+            "schema": {
+              "example": "68f0602ae29a2c2e0ff28625",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tipo de proyecto encontrado correctamente."
+          },
+          "400": {
+            "description": "El ID proporcionado no es válido."
+          },
+          "404": {
+            "description": "No existe un tipo de proyecto con ese ID."
+          },
+          "500": {
+            "description": "Error interno al buscar el tipo de proyecto."
+          }
+        },
+        "summary": "Obtiene un tipo de proyecto por su ID.",
+        "tags": [
+          "TipoProyecto"
+        ]
+      }
+    },
+    "/reclamo": {
+      "post": {
+        "operationId": "ReclamoController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReclamoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Reclamo"
+        ]
+      },
+      "get": {
+        "operationId": "ReclamoController_findByCliente",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Reclamo"
+        ]
+      }
+    },
+    "/reclamo/update-estado/{id}": {
+      "put": {
+        "operationId": "ReclamoController_updateEstado",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEstadoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Reclamo"
+        ]
+      }
+    },
+    "/reclamo/reassign-area/{id}": {
+      "put": {
+        "operationId": "ReclamoController_reassignArea",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReasignarAreaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Reclamo"
+        ]
+      }
+    },
+    "/reclamo/{id}": {
+      "put": {
+        "operationId": "ReclamoController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateReclamoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Reclamo"
+        ]
+      }
+    },
+    "/tipo-reclamo": {
+      "get": {
+        "operationId": "TipoReclamoController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "TipoReclamo"
+        ]
+      }
+    },
+    "/tipo-reclamo/{id}": {
+      "get": {
+        "operationId": "TipoReclamoController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "TipoReclamo"
+        ]
+      }
+    },
+    "/cambio-estado/{id}": {
+      "get": {
+        "operationId": "CambioEstadoController_findByReclamo",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "CambioEstado"
+        ]
+      }
+    },
+    "/cambio-estado/estado/{estado}": {
+      "get": {
+        "operationId": "CambioEstadoController_findByEstado",
+        "parameters": [
+          {
+            "name": "estado",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "CambioEstado"
+        ]
+      }
+    },
+    "/area": {
+      "post": {
+        "operationId": "AreaController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAreaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AreaDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Area"
+        ]
+      },
+      "get": {
+        "operationId": "AreaController_findAll",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AreaDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Area"
+        ]
+      }
+    },
+    "/area/{id}": {
+      "get": {
+        "operationId": "AreaController_findById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AreaDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Area"
+        ]
+      },
+      "put": {
+        "operationId": "AreaController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAreaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AreaDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Area"
+        ]
+      },
+      "delete": {
+        "operationId": "AreaController_softDelete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Area"
+        ]
+      }
+    },
+    "/auth/register-cliente": {
+      "post": {
+        "description": "Crea un cliente en el sistema usando los datos enviados en el cuerpo de la solicitud. Devuelve un JWT (access_token) si el registro es exitoso. El email debe ser único en el sistema.",
+        "operationId": "AuthController_registrarCliente",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Datos requeridos para registrar un cliente",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              },
+              "examples": {
+                "ejemploCorrecto": {
+                  "summary": "Cliente válido",
+                  "value": {
+                    "nombre": "Juan Perez",
+                    "email": "juan@example.com",
+                    "telefono": "3516789900",
+                    "contraseña": "MiClaveSegura123"
+                  }
+                },
+                "emailDuplicado": {
+                  "summary": "Intento de registro con email ya existente",
+                  "value": {
+                    "nombre": "Carlos López",
+                    "email": "registrado@example.com",
+                    "telefono": "3511112233",
+                    "contraseña": "Clave12345"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Cliente registrado correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "access_token": "jwt_generado_aqui..."
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación o email ya en uso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "statusCode": 400,
+                    "message": "El email ya está en uso",
+                    "error": "Bad Request"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Registrar un nuevo cliente",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/register-empleado": {
+      "post": {
+        "description": "Crea un empleado en el sistema y retorna un JWT para autenticación. El email debe ser único.",
+        "operationId": "AuthController_registrarEmpleado",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Datos necesarios para registrar un empleado",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              },
+              "examples": {
+                "ejemploCorrecto": {
+                  "summary": "Empleado válido",
+                  "value": {
+                    "nombre": "María González",
+                    "email": "maria@example.com",
+                    "telefono": "3515559900",
+                    "contraseña": "PasswordSeguro456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Empleado registrado correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "access_token": "jwt_generado_aqui..."
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error en los datos enviados o email duplicado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "statusCode": 400,
+                    "message": "El email ya está en uso",
+                    "error": "Bad Request"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Registrar un nuevo empleado",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "description": "Valida las credenciales enviadas y retorna un JWT válido. Aplica tanto para clientes como empleados.",
+        "operationId": "AuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Credenciales del usuario",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              },
+              "examples": {
+                "ejemploCorrecto": {
+                  "summary": "Login exitoso",
+                  "value": {
+                    "email": "usuario@example.com",
+                    "contraseña": "MiPassword123"
+                  }
+                },
+                "ejemploIncorrecto": {
+                  "summary": "Credenciales inválidas",
+                  "value": {
+                    "email": "usuario@example.com",
+                    "contraseña": "incorrecta"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login exitoso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "access_token": "jwt_generado_aqui..."
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos enviados incompletos o mal formateados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "statusCode": 400,
+                    "message": "email must be an email",
+                    "error": "Bad Request"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciales incorrectas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Credenciales inválidas",
+                    "error": "Unauthorized"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Iniciar sesión",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/cliente/update": {
+      "put": {
+        "description": "Permite que el cliente autenticado actualice su información personal. El token JWT es obligatorio para acceder a este endpoint.",
+        "operationId": "ClienteController_updateProfile",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Campos opcionales para actualizar del cliente.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateClienteDto"
+              },
+              "examples": {
+                "actualizarEmail": {
+                  "summary": "Actualizar solo el email",
+                  "value": {
+                    "email": "nuevo-correo@example.com"
+                  }
+                },
+                "actualizarTelefono": {
+                  "summary": "Actualizar solo el teléfono",
+                  "value": {
+                    "telefono": "3516789900"
+                  }
+                },
+                "actualizarTodo": {
+                  "summary": "Actualizar todos los campos",
+                  "value": {
+                    "email": "cliente-editado@example.com",
+                    "nombre": "Thomas Moreno Editado",
+                    "telefono": "3515557777"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Datos del cliente actualizados correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": "6918e2ebf030ce5632e8cac4",
+                    "email": "cliente-editado@example.com",
+                    "nombre": "Thomas Moreno Editado",
+                    "telefono": "3515557777"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos inválidos enviados al servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "statusCode": 400,
+                    "message": [
+                      "email must be an email"
+                    ],
+                    "error": "Bad Request"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido o no proporcionado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "statusCode": 401,
+                    "message": "Unauthorized"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor al actualizar los datos."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Actualizar los datos del cliente autenticado.",
+        "tags": [
+          "Cliente"
+        ]
+      }
+    },
+    "/empleado/update": {
+      "put": {
+        "operationId": "EmpleadoController_updateProfile",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEmpleadoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Perfil actualizado correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateEmpleadoDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "403": {
+            "description": "No permitido para este rol"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Actualizar perfil del empleado",
+        "tags": [
+          "Empleado"
+        ]
+      }
+    },
+    "/empleado/{email}/area": {
+      "patch": {
+        "operationId": "EmpleadoController_asignarArea",
+        "parameters": [
+          {
+            "name": "email",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AsignarAreaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "Empleado"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "API",
+    "description": "Documentación de la API",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "CreateProyectoDto": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "example": "Proyecto 1",
+            "description": "El nombre del proyecto.",
+            "maxLength": 40
+          },
+          "descripcion": {
+            "type": "string",
+            "example": "Este proyecto es de prueba",
+            "description": "Describe el proyecto.",
+            "maxLength": 100
+          },
+          "tipoProyectoId": {
+            "type": "string",
+            "example": "68f0602ae29a2c2e0ff28625",
+            "description": "ID del tipo de proyecto (ObjectId de MongoDB)."
+          }
+        },
+        "required": [
+          "nombre",
+          "tipoProyectoId"
+        ]
+      },
+      "UpdateProyectoDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateReclamoDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateEstadoDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "ReasignarAreaDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateReclamoDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateAreaDto": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "example": "Ventas",
+            "description": "Nombre del área"
+          },
+          "descripcion": {
+            "type": "string",
+            "example": "Área encargada de las ventas",
+            "description": "Descripción del área"
+          }
+        },
+        "required": [
+          "nombre"
+        ]
+      },
+      "AreaDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "123e4567-e89b-12d3-a456-426614174000",
+            "description": "ID del área"
+          },
+          "nombre": {
+            "type": "string",
+            "example": "Ventas",
+            "description": "Nombre del área"
+          },
+          "descripcion": {
+            "type": "string",
+            "example": "Área encargada de las ventas",
+            "description": "Descripción del producto"
+          }
+        },
+        "required": [
+          "id",
+          "nombre"
+        ]
+      },
+      "UpdateAreaDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "RegisterDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "usuario@example.com",
+            "description": "Correo electrónico del usuario"
+          },
+          "contraseña": {
+            "type": "string",
+            "example": "123456",
+            "description": "Contraseña del usuario",
+            "minLength": 6
+          },
+          "nombre": {
+            "type": "string",
+            "example": "Thomas Moreno",
+            "description": "Nombre completo del usuario",
+            "maxLength": 50
+          },
+          "telefono": {
+            "type": "string",
+            "example": "353435345",
+            "description": "Teléfono del usuario",
+            "maxLength": 20
+          }
+        },
+        "required": [
+          "email",
+          "contraseña",
+          "nombre",
+          "telefono"
+        ]
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "usuario@example.com",
+            "description": "Correo electrónico del usuario"
+          },
+          "contraseña": {
+            "type": "string",
+            "example": "123456",
+            "description": "Contraseña del usuario",
+            "minLength": 6
+          }
+        },
+        "required": [
+          "email",
+          "contraseña"
+        ]
+      },
+      "UpdateClienteDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "cliente@example.com",
+            "description": "Correo electrónico del cliente"
+          },
+          "nombre": {
+            "type": "string",
+            "example": "Thomas Nahuel Moreno",
+            "description": "Nombre completo del cliente"
+          },
+          "telefono": {
+            "type": "string",
+            "example": "3514567890",
+            "description": "Número de teléfono del cliente"
+          }
+        },
+        "required": [
+          "email",
+          "nombre",
+          "telefono"
+        ]
+      },
+      "UpdateEmpleadoDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "nuevo-correo@example.com",
+            "description": "Nuevo correo del empleado. Debe ser un email válido."
+          },
+          "nombre": {
+            "type": "string",
+            "example": "Juan Pérez",
+            "description": "Nuevo nombre del empleado."
+          },
+          "telefono": {
+            "type": "string",
+            "example": "3516789900",
+            "description": "Nuevo número de teléfono del empleado."
+          }
+        }
+      },
+      "AsignarAreaDto": {
+        "type": "object",
+        "properties": {
+          "area": {
+            "type": "string",
+            "example": "Ventas",
+            "description": "Área de trabajo del empleado."
+          }
+        }
+      }
+    }
+  }
+}

@@ -121,9 +121,10 @@ src/features/dashboard/
    - **Siempre** respeta la estructura: `components/`, `hooks/`, `services/`, `stores/`, `constants/`, `types/`, `utils/`
    - Si no necesitas alguna de estas carpetas, simplemente no la crees, pero si la creas, sigue el patrón
 
-4. **Nombres de archivos**: 
-   - Usa kebab-case para nombres de archivos: `proyecto-list.tsx`, `use-proyectos.ts`
-   - Usa PascalCase para componentes: `ProyectoList`, `ReclamoDetail`
+4. **Nombres de archivos y funciones**: 
+   - Usa kebab-case para TODOS los nombres de archivos: `proyecto-list.tsx`, `use-proyectos.ts`, `reclamo-detail.tsx`
+   - Los componentes React también deben usar kebab-case en el nombre del archivo
+   - Las funciones también deben usar kebab-case: `crear-reclamo()`, `listar-proyectos()`, `actualizar-estado()`
 
 ### 📍 Dónde Trabajar Según la Tarea
 
@@ -139,165 +140,141 @@ src/features/dashboard/
 
 ### ¿Qué es?
 
-El **API Client Global** es un objeto único (`api`) que centraliza todas las llamadas al backend. Está ubicado en `/src/lib/api/index.ts` y combina los módulos de API de todas las features usando el patrón **barrel export**.
+El **API Client Global** es un objeto único (`api`) que centraliza todas las llamadas al backend.  
+Está ubicado en `src/lib/api/index.ts` y es la **única forma permitida** de hablar con el backend desde el frontend.
 
-### Estructura del API Client
+Para este trabajo práctico, en lugar de armar servicios por feature + barrel exports, usamos una versión
+**simplificada y directa**: todas las funciones para cada endpoint están definidas en ese archivo, agrupadas
+por funcionalidad.
 
-El objeto `api` está organizado por **funcionalidad**, no por tipo de usuario:
+### Implementación actual (TP)
+
+- El cliente usa la variable de entorno **`NEXT_PUBLIC_BACKEND_UR`** como base de todas las URLs.
+- Se define un helper interno `request()` que:
+  - Construye la URL (`BASE_URL + path`).
+  - Agrega cabecera `Authorization: Bearer <token>` si se le pasa un token.
+  - Envía/recibe JSON.
+  - Lanza errores con mensajes legibles cuando el backend devuelve `message`.
+- Encima de `request()` se expone un objeto `api` con esta estructura (resumida):
 
 ```typescript
-api/
-├── auth/                    # Autenticación y registro
-│   ├── login()
-│   ├── registro()
-│   └── recuperarPassword()
-├── reclamos/               # Funcionalidades de reclamos (combinado)
-│   ├── crear()             # Cliente
-│   ├── listarMios()        # Cliente
-│   ├── listarPorArea()     # Empleado
-│   ├── actualizarEstado()  # Empleado
-│   ├── reasignarArea()     # Empleado
-│   └── obtener()            # Compartido
-├── proyectos/              # Funcionalidades de proyectos
-├── clientes/               # Funcionalidades de clientes
-├── areas/                  # Funcionalidades de áreas (admin)
-└── usuarios/               # Funcionalidades de usuarios (admin)
+import { api } from "@/lib/api"
+
+api.auth.login(...)
+api.auth.registerCliente(...)
+api.auth.registerEmpleado(...)
+
+api.proyectos.crear(...)
+api.proyectos.listar(...)
+api.proyectos.obtenerPorId(...)
+api.proyectos.actualizar(...)
+api.proyectos.eliminar(...)
+api.proyectos.listarPorTipoProyecto(...)
+
+api.tipoProyecto.listar(...)
+api.tipoProyecto.obtenerPorId(...)
+
+api.reclamos.crear(...)
+api.reclamos.listarPorCliente(...)
+api.reclamos.actualizarEstado(...)
+api.reclamos.reasignarArea(...)
+api.reclamos.actualizar(...)
+
+api.tipoReclamo.listar(...)
+api.tipoReclamo.obtenerPorId(...)
+
+api.cambioEstado.listarPorReclamo(...)
+api.cambioEstado.listarPorEstado(...)
+
+api.areas.crear(...)
+api.areas.listar(...)
+api.areas.obtenerPorId(...)
+api.areas.actualizar(...)
+api.areas.eliminar(...)
+
+api.cliente.actualizarPerfil(...)
+
+api.empleado.actualizarPerfil(...)
+api.empleado.asignarArea(...)
 ```
 
-### ¿Cómo Funciona?
+### Reglas de uso
 
-1. **Cada feature exporta su módulo de API** desde su carpeta `services/`:
-   ```typescript
-   // src/features/dashboard/cliente/services/reclamos-api.ts
-   export const reclamosClienteApi = {
-     crear: (data) => { /* ... */ },
-     listarMios: () => { /* ... */ },
-     modificar: (id, data) => { /* ... */ }
-   }
-   ```
+- **NUNCA** llames `fetch` directo al backend desde componentes o hooks.
+- **SIEMPRE** usa el objeto `api` global (`import { api } from "@/lib/api"`).
+- La lógica de UI (formularios, tablas, etc.) vive en cada feature, pero todas las llamadas HTTP pasan por `api`.
 
-2. **El archivo central importa y combina** todos los módulos:
-   ```typescript
-   // src/lib/api/index.ts
-   import { reclamosClienteApi } from '@/features/dashboard/cliente/services/reclamos-api'
-   import { reclamosEmpleadoApi } from '@/features/dashboard/empleado/services/reclamos-api'
-   
-   export const api = {
-     reclamos: {
-       ...reclamosClienteApi,
-       ...reclamosEmpleadoApi,
-     }
-   }
-   ```
+### Uso con TanStack Query (React Query)
 
-3. **En cualquier parte de la app, importas y usas**:
-   ```typescript
-   import { api } from '@/lib/api'
-   
-   // Cliente creando reclamo
-   await api.reclamos.crear(data)
-   
-   // Empleado actualizando estado
-   await api.reclamos.actualizarEstado(id, "EN_PROCESO", "En revisión")
-   ```
+En el front se recomienda usar **TanStack Query** para manejo de datos remotos (estado de carga, error, cache).
 
-### ⚠️ Cómo Agregar Nuevas APIs
-
-**Paso 1**: Crea el módulo de API en la feature correspondiente:
+Ejemplos típicos:
 
 ```typescript
-// src/features/dashboard/cliente/services/proyectos-api.ts
-export const proyectosClienteApi = {
-  listar: async () => {
-    // Lógica de llamada al backend
-  },
-  crear: async (data) => {
-    // Lógica de llamada al backend
-  },
-  // ... más métodos
+import { useQuery, useMutation } from "@tanstack/react-query"
+import { api } from "@/lib/api"
+import { useAuthStore } from "@/stores/auth"
+
+// 1) Ejemplo: listar proyectos del cliente autenticado
+export function useProyectos() {
+  const token = useAuthStore((s) => s.auth?.accessToken)
+
+  return useQuery({
+    queryKey: ["proyectos"],
+    enabled: !!token,
+    queryFn: () => {
+      if (!token) throw new Error("No hay token")
+      return api.proyectos.listar(token)
+    },
+  })
+}
+
+// 2) Ejemplo: crear proyecto
+export function useCrearProyecto() {
+  const token = useAuthStore((s) => s.auth?.accessToken)
+
+  return useMutation({
+    mutationFn: (payload: {
+      nombre: string
+      descripcion?: string
+      tipoProyectoId: string
+    }) => {
+      if (!token) throw new Error("No hay token")
+      return api.proyectos.crear(payload, token)
+    },
+  })
+}
+
+// 3) Ejemplo: login
+export function useLogin() {
+  const setAuth = useAuthStore((s) => s.setAuth)
+
+  return useMutation({
+    mutationFn: (payload: { email: string; contraseña: string }) =>
+      api.auth.login(payload),
+    onSuccess: (data) => {
+      // guardar token y/o usuario en el store
+      setAuth({ accessToken: data.access_token })
+    },
+  })
 }
 ```
 
-**Paso 2**: Importa el módulo en `/src/lib/api/index.ts`:
+Patrón general:
 
-```typescript
-// src/lib/api/index.ts
-import { proyectosClienteApi } from '@/features/dashboard/cliente/services/proyectos-api'
-```
+- **Consultas (`GET`)** → `useQuery` con `queryKey` descriptivo y `queryFn` que llama a `api.*`.
+- **Mutaciones (`POST/PUT/PATCH/DELETE`)** → `useMutation` que llama a `api.*` y luego:
+  - Actualiza el store de auth si es login/registro.
+  - Invalida queries relevantes (`queryClient.invalidateQueries(["proyectos"])`, etc.).
 
-**Paso 3**: Agrega el módulo al objeto `api`:
+### Nota sobre escalabilidad
 
-```typescript
-export const api = {
-  // ... otros módulos
-  proyectos: {
-    ...proyectosClienteApi,
-    // Si hay métodos de otros roles, agrégalos aquí también
-  },
-}
-```
+A futuro (fuera del deadline del TP) se podría refactorizar a:
 
-**Paso 4**: Usa la API en tu código:
+- Servicios por feature en `features/[feature]/services/*-api.ts`.
+- `src/lib/api/index.ts` actuando como barrel export que combina esos módulos.
 
-```typescript
-import { api } from '@/lib/api'
-
-const proyectos = await api.proyectos.listar()
-```
-
-### 📋 Ejemplos por Tipo de Usuario
-
-**Cliente:**
-```typescript
-// Crear reclamo
-await api.reclamos.crear(data)
-
-// Listar mis reclamos
-await api.reclamos.listarMios()
-
-// Listar mis proyectos
-await api.proyectos.listar()
-```
-
-**Empleado:**
-```typescript
-// Listar reclamos de mi área
-await api.reclamos.listarPorArea()
-
-// Actualizar estado de reclamo
-await api.reclamos.actualizarEstado(id, "EN_PROCESO", "En revisión")
-
-// Listar clientes
-await api.clientes.listar()
-```
-
-**Admin:**
-```typescript
-// Listar todas las áreas
-await api.areas.listar()
-
-// Crear área
-await api.areas.crear(data)
-
-// Listar usuarios
-await api.usuarios.listar()
-```
-
-### ✅ Ventajas de Esta Arquitectura
-
-1. **Un solo lugar** para todas las llamadas API
-2. **Sin duplicación** - cada método se define una vez
-3. **Fácil de encontrar** - `api.reclamos.crear()` es intuitivo
-4. **Escalable** - agregar nuevos métodos es simple
-5. **Type-safe** - TypeScript ayuda con autocompletado
-6. **Mantenible** - cambios en un solo lugar
-
-### 🚨 Reglas Importantes
-
-- **NUNCA** hagas llamadas directas al backend desde componentes
-- **SIEMPRE** usa el objeto `api` global
-- **Organiza** los métodos por funcionalidad, no por rol
-- **Combina** métodos de diferentes roles en el mismo namespace cuando sea apropiado (ej: `api.reclamos.*`)
+Pero la implementación actual ya respeta el concepto de **API Client Global** y es suficiente para la entrega.
 
 ---
 
