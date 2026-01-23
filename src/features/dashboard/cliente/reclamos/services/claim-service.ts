@@ -100,4 +100,25 @@ export const claimService = {
       return [];
     }
   },
+
+  async updateEstado(
+    reclamoId: string,
+    payload: { estado: string; descripcion: string },
+    token: string,
+  ) {
+    return api.reclamos.updateEstado(reclamoId, payload, token)
+  },
+
+  async reassignArea(
+    reclamoId: string,
+    payload: { areaId: string; descripcion: string },
+    token: string,
+  ) {
+    return api.reclamos.reassignArea(reclamoId, payload, token)
+  },
+
+  async getClaimById(id: string, token: string): Promise<Claim> {
+    const response = await api.reclamos.obtenerPorId(id, token)
+    return transformApiClaim(response)
+  }
 }

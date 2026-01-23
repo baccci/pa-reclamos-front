@@ -3,9 +3,9 @@
 import { formatDateTime } from "@/helpers/format"
 import { STATUS_LABELS } from "../constants/claim-options"
 import { useCambioEstado } from "../hooks/use-cambio-estado"
-import { useReclamoDetail } from "../hooks/use-reclamo-detail"
-import { useProyectos } from "../hooks/use-proyectos"
-import { useMemo } from "react"
+import { UpdateEstadoYAreaForm } from "./actualizar-reclamo-form"
+import { useClaimDetail } from "../hooks/use-claim-detail"
+import { useClaim } from "../hooks/use-claim"
 
 interface ReclamoDetailProps {
   reclamoId: string
@@ -29,7 +29,7 @@ export function ReclamoDetail({ reclamoId }: ReclamoDetailProps) {
     data: reclamo,
     isLoading: reclamoLoading,
     error: reclamoError,
-  } = useReclamoDetail(reclamoId)
+  } = useClaim(reclamoId)
   const {
     data: cambiosEstado = [],
     isLoading: cambiosLoading,
@@ -105,6 +105,8 @@ export function ReclamoDetail({ reclamoId }: ReclamoDetailProps) {
           </span>
         </div>
       </div>
+      
+      <UpdateEstadoYAreaForm reclamoId={reclamoId} />
 
       {/* State Change History */}
       <div className="space-y-4">

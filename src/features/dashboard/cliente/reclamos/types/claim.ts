@@ -21,11 +21,9 @@ export interface Claim {
 
 export interface CreateClaimPayload {
   tipoReclamoId: string
-  proyecto: string
+  proyectoId: string
   areaId: string
   descripcion: string
   prioridad: string
   criticidad: string
-  cliente: string
-  proyectoId: string
 }

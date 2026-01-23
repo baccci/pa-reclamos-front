@@ -191,6 +191,39 @@ export const api = {
         method: "GET",
         token,
       }),
+    
+    updateEstado(id: string, data: any, token: string) {
+      return fetch(`${BASE_URL}/reclamo/update-estado/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      }).then(r => r.json())
+      },
+
+    reassignArea(id: string, data: any, token: string) {
+      return fetch(`${BASE_URL}/reclamo/reassign-area/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      }).then(r => r.json())
+    },
+
+    obtenerPorId(id: string, token: string) {
+      return fetch(`${BASE_URL}/reclamo/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }).then(r => r.json())
+    },
+
     },
 
     filtros: (
