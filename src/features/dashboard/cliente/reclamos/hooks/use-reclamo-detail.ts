@@ -60,8 +60,10 @@ function transformApiClaim(apiClaim: ApiClaimResponse): Claim {
     status: mapApiStatus(apiClaim.estado || "N/A"),
     createdAt: new Date(apiClaim.createdAt || Date.now()),
     updatedAt: new Date(apiClaim.updatedAt || Date.now()),
-    userId: apiClaim.proyecto?.cliente.id|| "N/A",
+    userId: apiClaim.proyecto?.cliente?.id || "N/A",
+    clientName: apiClaim.proyecto?.cliente?.nombre || "",
     projectName: apiClaim.proyecto?.nombre || "N/A",
+    areaId: apiClaim.areaId || undefined,
   }
 }
 

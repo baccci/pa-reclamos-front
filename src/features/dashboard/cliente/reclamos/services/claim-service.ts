@@ -12,8 +12,10 @@ function transformApiClaim(apiClaim: any): Claim {
     status: mapApiStatus(apiClaim.estado || "PENDIENTE"),
     createdAt: new Date(apiClaim.createdAt || Date.now()),
     updatedAt: new Date(apiClaim.updatedAt || Date.now()),
-    userId: apiClaim.proyecto?.clienteId || "",
+    userId: apiClaim.proyecto?.clienteId || apiClaim.proyecto?.cliente?.id || "",
+    clientName: apiClaim.proyecto?.cliente?.nombre || "",
     projectName: apiClaim.proyecto?.nombre || "Sin proyecto",
+    areaId: apiClaim.areaId || undefined,
   }
 }
 

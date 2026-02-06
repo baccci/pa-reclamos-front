@@ -35,7 +35,7 @@ export function ClaimCard({ claim, showClient = true }: ClaimCardProps) {
       </p>
       {showClient && (
         <p className="text-xs text-muted-foreground">
-          Cliente: {claim.userId}
+          Cliente: {claim.clientName || claim.userId || "Sin cliente"}
         </p>
       )}
 
