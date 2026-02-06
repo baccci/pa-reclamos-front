@@ -5,17 +5,17 @@ import type { Claim, CreateClaimPayload } from "../types/claim"
 function transformApiClaim(apiClaim: any): Claim {
   return {
     id: apiClaim.id,
-    title: apiClaim.descripcion?.substring(0, 50) + "..." || "Reclamo sin título",
     description: apiClaim.descripcion || "",
     type: apiClaim.tipoReclamo?.nombre?.toLowerCase().replace(/\s+/g, '_') || "incident",
     priority: mapApiPriority(apiClaim.prioridad || "MEDIA"),
     criticality: mapApiCriticality(apiClaim.criticidad || "MEDIA"),
     status: mapApiStatus(apiClaim.estado || "PENDIENTE"),
-    attachments: apiClaim.archivo ? [apiClaim.archivo] : [],
     createdAt: new Date(apiClaim.createdAt || Date.now()),
     updatedAt: new Date(apiClaim.updatedAt || Date.now()),
-    userId: apiClaim.proyecto?.clienteId || "",
+    userId: apiClaim.proyecto?.clienteId || apiClaim.proyecto?.cliente?.id || "",
+    clientName: apiClaim.proyecto?.cliente?.nombre || "",
     projectName: apiClaim.proyecto?.nombre || "Sin proyecto",
+    areaId: apiClaim.areaId || undefined,
   }
 }
 

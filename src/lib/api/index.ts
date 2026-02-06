@@ -221,7 +221,7 @@ export const api = {
       }),
     
     updateEstado(id: string, data: any, token: string) {
-      return fetch(`${BASE_URL}/reclamo/update-estado/${id}`, {
+      return fetch(`${BASE_URL}/reclamo/change-estado/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

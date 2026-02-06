@@ -12,6 +12,7 @@ export interface Claim {
   createdAt: Date
   updatedAt: Date
   userId: string
+  clientName?: string
   projectName: string
   areaId?: string
 }
