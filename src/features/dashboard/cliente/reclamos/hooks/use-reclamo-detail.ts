@@ -19,6 +19,10 @@ interface ApiClaimResponse {
   updatedAt?: string
   proyecto?: {
     clienteId?: string
+    cliente?: {
+      id?: string
+      nombre?: string
+    }
     nombre?: string
   }
   areaId?: string
@@ -57,8 +61,10 @@ function transformApiClaim(apiClaim: ApiClaimResponse): Claim {
     status: mapApiStatus(apiClaim.estado || "N/A"),
     createdAt: new Date(apiClaim.createdAt || Date.now()),
     updatedAt: new Date(apiClaim.updatedAt || Date.now()),
-    userId: apiClaim.proyecto?.clienteId || "N/A",
+    userId: apiClaim.proyecto?.clienteId || apiClaim.proyecto?.cliente?.id || "N/A",
+    clientName: apiClaim.proyecto?.cliente?.nombre || "",
     projectName: apiClaim.proyecto?.nombre || "N/A",
+    areaId: apiClaim.areaId || undefined,
   }
 }
 
