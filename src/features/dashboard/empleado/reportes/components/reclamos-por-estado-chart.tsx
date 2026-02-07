@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import {
@@ -44,17 +44,17 @@ export function ReclamosPorEstadoChart({ filtros }: { filtros?: ReporteFiltros }
     {
       estado: "Pendientes",
       cantidad: data.pendientes,
-      fill: "#FF9500", // Naranja brillante
+      fill: "#FF9500",
     },
     {
       estado: "En Proceso",
       cantidad: data.enProceso,
-      fill: "#0A84FF", // Azul brillante
+      fill: "#0A84FF",
     },
     {
       estado: "Resueltos",
       cantidad: data.resueltos,
-      fill: "#32D74B", // Verde brillante
+      fill: "#32D74B",
     },
   ]
 
@@ -70,20 +70,20 @@ export function ReclamosPorEstadoChart({ filtros }: { filtros?: ReporteFiltros }
             axisLine={false}
             tick={{ fill: "#E5E7EB", fontSize: 13 }}
           />
-          <YAxis 
-            tick={{ fill: "#E5E7EB", fontSize: 13 }} 
+          <YAxis
+            tick={{ fill: "#E5E7EB", fontSize: 13 }}
             axisLine={false}
             tickLine={false}
           />
           <ChartTooltip content={<ChartTooltipContent />} />
-          <Bar 
-            dataKey="cantidad" 
+          <Bar
+            dataKey="cantidad"
             radius={8}
-            label={{ 
-              position: "top", 
+            label={{
+              position: "top",
               fill: "#FFFFFF",
               fontSize: 14,
-              fontWeight: "bold"
+              fontWeight: "bold",
             }}
           />
         </BarChart>
@@ -91,4 +91,3 @@ export function ReclamosPorEstadoChart({ filtros }: { filtros?: ReporteFiltros }
     </div>
   )
 }
-

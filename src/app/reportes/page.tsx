@@ -3,13 +3,13 @@
 import { useState } from "react"
 import { DayPicker } from "react-day-picker"
 import { format } from "date-fns"
-import { ReclamosPorEstadoChart } from "@/features/dashboard/cliente/reportes/components/reclamos-por-estado-chart"
-import { EstadisticasPromedios } from "@/features/dashboard/cliente/reportes/components/estadisticas-promedios"
-import { DistribucionEstadosChart } from "@/features/dashboard/cliente/reportes/components/distribucion-estados-chart"
+import { ReclamosPorEstadoChart } from "@/features/dashboard/empleado/reportes/components/reclamos-por-estado-chart"
+import { EstadisticasPromedios } from "@/features/dashboard/empleado/reportes/components/estadisticas-promedios"
+import { DistribucionEstadosChart } from "@/features/dashboard/empleado/reportes/components/distribucion-estados-chart"
 import "@/features/dashboard/cliente/reportes/components/charts.css"
 import "react-day-picker/dist/style.css"
 
-export default function ReportesPage() {
+export default function ReportesEmpleadoPage() {
   const [fechaDesde, setFechaDesde] = useState<Date | undefined>()
   const [fechaFin, setFechaFin] = useState<Date | undefined>()
   const [openMin, setOpenMin] = useState(false)
@@ -30,7 +30,7 @@ export default function ReportesPage() {
       <div>
         <h1 className="text-2xl font-bold text-foreground">Reportes</h1>
         <p className="text-muted-foreground">
-          Visualiza estadisticas y metricas de tus reclamos
+          Visualiza estadisticas y metricas de tu area
         </p>
       </div>
 

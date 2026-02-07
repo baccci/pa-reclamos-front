@@ -1,6 +1,6 @@
-"use client"
+﻿"use client"
 
-import { Pie, PieChart, Cell, Legend } from "recharts"
+import { Pie, PieChart, Cell } from "recharts"
 import {
   ChartContainer,
   ChartTooltip,
@@ -29,11 +29,10 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-// Colores brillantes para modo oscuro
 const COLORS = [
-  "#FF9500", // Naranja brillante - Pendientes
-  "#0A84FF", // Azul brillante - En Proceso
-  "#32D74B", // Verde brillante - Resueltos
+  "#FF9500",
+  "#0A84FF",
+  "#32D74B",
 ]
 
 export function DistribucionEstadosChart({ filtros }: { filtros?: ReporteFiltros }) {
@@ -88,61 +87,60 @@ export function DistribucionEstadosChart({ filtros }: { filtros?: ReporteFiltros
       <div className="[&_.recharts-pie-label-text]:!fill-white">
         <ChartContainer config={chartConfig} className="h-[300px] w-full">
           <PieChart>
-          <Pie
-            data={chartData}
-            cx="50%"
-            cy="50%"
-            labelLine={false}
-            label={({ name, percentage, cx, cy, midAngle, innerRadius, outerRadius }) => {
-              const RADIAN = Math.PI / 180
-              const radius = outerRadius + 20
-              const x = cx + radius * Math.cos(-midAngle * RADIAN)
-              const y = cy + radius * Math.sin(-midAngle * RADIAN)
-              
-              return (
-                <text 
-                  x={x} 
-                  y={y} 
-                  fill="#FFFFFF"
-                  textAnchor={x > cx ? 'start' : 'end'} 
-                  dominantBaseline="central"
-                  style={{ fontSize: '13px', fontWeight: 'bold' }}
-                >
-                  {`${name}: ${percentage}%`}
-                </text>
-              )
-            }}
-            outerRadius={80}
-            fill="#8884d8"
-            dataKey="value"
-          >
-            {chartData.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-                stroke="hsl(var(--background))"
-                strokeWidth={2}
-              />
-            ))}
-          </Pie>
-          <ChartTooltip
-            content={
-              <ChartTooltipContent
-                hideLabel
-                formatter={(value, name) => (
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">{name}:</span>
-                    <span className="font-mono">{value}</span>
-                  </div>
-                )}
-              />
-            }
-          />
-        </PieChart>
-      </ChartContainer>
+            <Pie
+              data={chartData}
+              cx="50%"
+              cy="50%"
+              labelLine={false}
+              label={({ name, percentage, cx, cy, midAngle, innerRadius, outerRadius }) => {
+                const RADIAN = Math.PI / 180
+                const radius = outerRadius + 20
+                const x = cx + radius * Math.cos(-midAngle * RADIAN)
+                const y = cy + radius * Math.sin(-midAngle * RADIAN)
+
+                return (
+                  <text
+                    x={x}
+                    y={y}
+                    fill="#FFFFFF"
+                    textAnchor={x > cx ? "start" : "end"}
+                    dominantBaseline="central"
+                    style={{ fontSize: "13px", fontWeight: "bold" }}
+                  >
+                    {`${name}: ${percentage}%`}
+                  </text>
+                )
+              }}
+              outerRadius={80}
+              fill="#8884d8"
+              dataKey="value"
+            >
+              {chartData.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                  stroke="hsl(var(--background))"
+                  strokeWidth={2}
+                />
+              ))}
+            </Pie>
+            <ChartTooltip
+              content={
+                <ChartTooltipContent
+                  hideLabel
+                  formatter={(value, name) => (
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">{name}:</span>
+                      <span className="font-mono">{value}</span>
+                    </div>
+                  )}
+                />
+              }
+            />
+          </PieChart>
+        </ChartContainer>
       </div>
 
-      {/* Estadísticas resumidas */}
       <div className="grid grid-cols-3 gap-4">
         <div className="text-center">
           <div className="flex items-center justify-center gap-2 mb-1">
@@ -169,4 +167,3 @@ export function DistribucionEstadosChart({ filtros }: { filtros?: ReporteFiltros
     </div>
   )
 }
-

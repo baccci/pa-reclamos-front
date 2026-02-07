@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import {
   useTiempoPromedioResolucion,
@@ -24,29 +24,22 @@ export function EstadisticasPromedios({ filtros }: { filtros?: ReporteFiltros })
     )
   }
 
-  // Helper para extraer el valor numérico de la respuesta
   const getTiempoPromedio = () => {
     if (!tiempoPromedio) return null
-    // Si es un número directo
-    if (typeof tiempoPromedio === 'number') return tiempoPromedio
-    // Si es un objeto con promedio
-    if (typeof tiempoPromedio === 'object' && 'promedio' in tiempoPromedio) {
+    if (typeof tiempoPromedio === "number") return tiempoPromedio
+    if (typeof tiempoPromedio === "object" && "promedio" in tiempoPromedio) {
       return tiempoPromedio.promedio
     }
-    // Si es un objeto con avg, average, tiempo, etc
     const obj = tiempoPromedio as any
     return obj.avg || obj.average || obj.tiempo || obj.dias || null
   }
 
   const getCantidadPromedio = () => {
     if (!cantidadPromedio) return null
-    // Si es un número directo
-    if (typeof cantidadPromedio === 'number') return cantidadPromedio
-    // Si es un objeto con promedio
-    if (typeof cantidadPromedio === 'object' && 'promedio' in cantidadPromedio) {
+    if (typeof cantidadPromedio === "number") return cantidadPromedio
+    if (typeof cantidadPromedio === "object" && "promedio" in cantidadPromedio) {
       return cantidadPromedio.promedio
     }
-    // Si es un objeto con avg, average, cantidad, etc
     const obj = cantidadPromedio as any
     return obj.avg || obj.average || obj.cantidad || obj.total || null
   }
@@ -59,14 +52,14 @@ export function EstadisticasPromedios({ filtros }: { filtros?: ReporteFiltros })
       <div className="rounded-lg border bg-card p-6">
         <div className="space-y-2">
           <p className="text-sm font-medium text-muted-foreground">
-            Tiempo Promedio de Resolución
+            Tiempo Promedio de Resolucion
           </p>
           <div className="flex items-baseline gap-2">
             <p className="text-3xl font-bold text-foreground">
               {tiempoValor !== null && tiempoValor !== undefined
-                ? `${Math.round(tiempoValor)} días`
-                : errorTiempo 
-                ? "Error" 
+                ? `${Math.round(tiempoValor)} dias`
+                : errorTiempo
+                ? "Error"
                 : "N/A"}
             </p>
           </div>
@@ -75,7 +68,7 @@ export function EstadisticasPromedios({ filtros }: { filtros?: ReporteFiltros })
               {errorTiempo.message || "Error al cargar datos"}
             </p>
           )}
-          {tiempoPromedio && typeof tiempoPromedio === 'object' && 'total' in tiempoPromedio && tiempoPromedio.total && (
+          {tiempoPromedio && typeof tiempoPromedio === "object" && "total" in tiempoPromedio && tiempoPromedio.total && (
             <p className="text-xs text-muted-foreground">
               Basado en {tiempoPromedio.total} reclamo(s) resuelto(s)
             </p>
@@ -92,8 +85,8 @@ export function EstadisticasPromedios({ filtros }: { filtros?: ReporteFiltros })
             <p className="text-3xl font-bold text-foreground">
               {cantidadValor !== null && cantidadValor !== undefined
                 ? Math.round(cantidadValor)
-                : errorCantidad 
-                ? "Error" 
+                : errorCantidad
+                ? "Error"
                 : "N/A"}
             </p>
             <p className="text-sm text-muted-foreground">/ mes</p>
@@ -103,7 +96,7 @@ export function EstadisticasPromedios({ filtros }: { filtros?: ReporteFiltros })
               {errorCantidad.message || "Error al cargar datos"}
             </p>
           )}
-          {cantidadPromedio && typeof cantidadPromedio === 'object' && 'total' in cantidadPromedio && cantidadPromedio.total && (
+          {cantidadPromedio && typeof cantidadPromedio === "object" && "total" in cantidadPromedio && cantidadPromedio.total && (
             <p className="text-xs text-muted-foreground">
               Total: {cantidadPromedio.total} reclamo(s)
             </p>
@@ -113,4 +106,3 @@ export function EstadisticasPromedios({ filtros }: { filtros?: ReporteFiltros })
     </div>
   )
 }
-

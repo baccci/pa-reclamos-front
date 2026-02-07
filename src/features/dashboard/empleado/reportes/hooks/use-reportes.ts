@@ -38,11 +38,11 @@ export function useReclamosPorEstado(filtros?: FechaFilters) {
   const token = useAuthStore((state) => state.auth?.access_token)
 
   return useQuery({
-    queryKey: ["reportes", "reclamos-por-estado", filtros],
+    queryKey: ["reportes", "empleado", "reclamos-por-estado", filtros],
     queryFn: async () => {
       if (!token) throw new Error("No authentication token")
 
-      const reclamos = await api.reclamos.listarPorCliente(token)
+      const reclamos = await api.reclamos.listarPorArea(token)
       const items = Array.isArray(reclamos) ? reclamos : []
       const filtrados = filtrarPorFecha(items, filtros)
 
@@ -78,11 +78,11 @@ export function useTiempoPromedioResolucion(filtros?: FechaFilters) {
   const token = useAuthStore((state) => state.auth?.access_token)
 
   return useQuery({
-    queryKey: ["reportes", "tiempo-promedio-resolucion", filtros],
+    queryKey: ["reportes", "empleado", "tiempo-promedio-resolucion", filtros],
     queryFn: async () => {
       if (!token) throw new Error("No authentication token")
 
-      const reclamos = await api.reclamos.listarPorCliente(token)
+      const reclamos = await api.reclamos.listarPorArea(token)
       const items = Array.isArray(reclamos) ? reclamos : []
       const filtrados = filtrarPorFecha(items, filtros)
 
@@ -113,11 +113,11 @@ export function useCantidadPromedioResolucion(filtros?: FechaFilters) {
   const token = useAuthStore((state) => state.auth?.access_token)
 
   return useQuery({
-    queryKey: ["reportes", "cantidad-promedio-resolucion", filtros],
+    queryKey: ["reportes", "empleado", "cantidad-promedio-resolucion", filtros],
     queryFn: async () => {
       if (!token) throw new Error("No authentication token")
 
-      const reclamos = await api.reclamos.listarPorCliente(token)
+      const reclamos = await api.reclamos.listarPorArea(token)
       const items = Array.isArray(reclamos) ? reclamos : []
       const filtrados = filtrarPorFecha(items, filtros)
 
@@ -139,32 +139,5 @@ export function useCantidadPromedioResolucion(filtros?: FechaFilters) {
     },
     enabled: !!token,
     retry: false,
-  })
-}
-
-export function useReclamosFiltrados(
-  filtros: {
-    estado?: string
-    fechaDesde?: string
-    fechaFin?: string
-  }
-) {
-  const token = useAuthStore((state) => state.auth?.access_token)
-
-  return useQuery({
-    queryKey: ["reportes", "reclamos-filtrados", filtros],
-    queryFn: async () => {
-      if (!token) throw new Error("No authentication token")
-
-      const allClaims = await api.reclamos.listarPorCliente(token)
-      if (!Array.isArray(allClaims)) return []
-
-      const filtrados = filtrarPorFecha(allClaims, filtros)
-      return filtrados.filter((claim: any) => {
-        if (filtros.estado && claim.estado !== filtros.estado) return false
-        return true
-      })
-    },
-    enabled: !!token,
   })
 }
