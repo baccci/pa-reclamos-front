@@ -45,6 +45,11 @@ export const NAVIGATION_ITEMS_BY_ROLE: Record<UserRole, NavigationItem[]> = {
       icon: "list",
     },
     {
+      label: "Gestionar Áreas",
+      href: "/empleado/areas",
+      icon: "settings",
+    },
+    {
       label: "Reportes",
       href: "/reportes",
       icon: "barChart",

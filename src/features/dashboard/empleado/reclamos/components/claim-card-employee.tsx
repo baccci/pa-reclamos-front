@@ -59,14 +59,14 @@ export function ClaimCardEmployee({ claim }: ClaimCardEmployeeProps) {
             </button>
           ) : (
             <Link
-              href={`/cambio-estado/${claim.id}`}
+              href={`/empleado/cambio-estado/${claim.id}`}
               className="px-3 py-1.5 text-xs font-medium text-primary hover:text-primary/80 border border-primary/20 rounded hover:bg-primary/5 transition-colors"
             >
               Cambiar estado
             </Link>
           )}
           <Link
-            href={`/reasignar-area/${claim.id}`}
+            href={`/empleado/reasignar-area/${claim.id}`}
             className="px-3 py-1.5 text-xs font-medium text-primary hover:text-primary/80 border border-primary/20 rounded hover:bg-primary/5 transition-colors"
           >
             Reasignar Área

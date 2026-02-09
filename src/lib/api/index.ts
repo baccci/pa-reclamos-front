@@ -416,6 +416,12 @@ export const api = {
   // EMPLEADO
   // ------------------------------------------
   empleado: {
+    obtenerPerfil: (email: string, token: string) =>
+      request(`/empleado/me/${email}`, {
+        method: "GET",
+        token,
+      }),
+
     actualizarPerfil: (data: Record<string, unknown>, token: string) =>
       request("/empleado/update", {
         method: "PUT",
