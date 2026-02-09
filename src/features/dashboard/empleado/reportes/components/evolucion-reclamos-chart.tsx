@@ -10,7 +10,7 @@ import {
   ChartTooltipContent,
 } from "@/components/chart"
 
-import { useReclamosParaEvolucion } from "../hooks/use-reportes"
+import { useReclamosParaEvolucion } from "../hooks/use-empleado-reportes"
 
 const chartConfig = {
   cantidad: {

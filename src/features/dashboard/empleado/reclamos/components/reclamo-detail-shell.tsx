@@ -9,7 +9,7 @@ import { ReasignarAreaForm } from "./reasignar-area-form"
 
 interface ReclamoDetailShellProps {
   reclamoId: string
-  variant: "cambio-estado" | "reasignar-area"
+  variant: "cambio-estado" | "reasignar-area" | "detalle"
 }
 
 const STATUS_COLORS: Record<string, string> = {

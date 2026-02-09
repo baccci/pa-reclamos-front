@@ -51,7 +51,7 @@ export const NAVIGATION_ITEMS_BY_ROLE: Record<UserRole, NavigationItem[]> = {
     },
     {
       label: "Reportes",
-      href: "/reportes",
+      href: "/empleado/reportes",
       icon: "barChart",
     },
   ],

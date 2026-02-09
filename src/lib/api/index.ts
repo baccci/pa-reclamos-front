@@ -162,7 +162,7 @@ export const api = {
       token: string,
     ) =>
       request(`/proyecto/${id}`, {
-        method: "PUT",
+        method: "PATCH",
         body: data,
         token,
       }),
@@ -256,7 +256,7 @@ export const api = {
       params: {
         estado?: string
         fechaDesde?: string
-        fechaFin?: string
+        fechaHasta?: string
         clienteId?: string
       },
       token: string,
@@ -264,26 +264,30 @@ export const api = {
       const queryParams = new URLSearchParams()
       if (params.estado) queryParams.append("estado", params.estado)
       if (params.fechaDesde) queryParams.append("fechaDesde", params.fechaDesde)
-      if (params.fechaFin) queryParams.append("fechaFin", params.fechaFin)
+      if (params.fechaHasta) queryParams.append("fechaHasta", params.fechaHasta)
       if (params.clienteId) queryParams.append("clienteId", params.clienteId)
 
-      return request(`/reclamo/filtros?${queryParams.toString()}`, {
+      return request<number>(`/reclamo/filtros?${queryParams.toString()}`, {
         method: "GET",
         token,
       })
     },
 
-    tiempoPromedioResolucion: (token: string) =>
-      request("/reclamo/tiempo-promedio-resolucion", {
+    tiempoPromedioResolucion: (areaId?: string, token?: string) => {
+      const query = areaId ? `?areaId=${areaId}` : ""
+      return request<number>(`/reclamo/tiempo-promedio-resolucion${query}`, {
         method: "GET",
         token,
-      }),
+      })
+    },
 
-    cantidadPromedioResolucion: (token: string) =>
-      request("/reclamo/cantidad-promedio-resolucion", {
+    cantidadPromedioResolucion: (areaId?: string, token?: string) => {
+      const query = areaId ? `?areaId=${areaId}` : ""
+      return request<number>(`/reclamo/cantidad-promedio-resolucion${query}`, {
         method: "GET",
         token,
-      }),
+      })
+    },
 
     actualizarEstado: (
       id: string,

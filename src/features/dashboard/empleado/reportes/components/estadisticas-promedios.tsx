@@ -5,7 +5,7 @@ import { useEmpleadoProfile } from "@/features/dashboard/empleado/hooks/use-empl
 import {
   usePorcentajeResolucion,
   useTiempoPromedioResolucion,
-} from "../hooks/use-reportes"
+} from "../hooks/use-empleado-reportes"
 
 export function EstadisticasPromedios() {
   const { data: empleado, isLoading: isLoadingProfile } = useEmpleadoProfile()

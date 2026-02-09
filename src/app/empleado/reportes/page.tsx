@@ -1,9 +1,10 @@
-import { ReclamosPorEstadoChart } from "@/features/dashboard/cliente/reportes/components/reclamos-por-estado-chart"
-import { EvolucionReclamosChart } from "@/features/dashboard/cliente/reportes/components/evolucion-reclamos-chart"
-import { DistribucionEstadosChart } from "@/features/dashboard/cliente/reportes/components/distribucion-estados-chart"
+import { ReclamosPorEstadoChart } from "@/features/dashboard/empleado/reportes/components/reclamos-por-estado-chart"
+import { EstadisticasPromedios } from "@/features/dashboard/empleado/reportes/components/estadisticas-promedios"
+import { EvolucionReclamosChart } from "@/features/dashboard/empleado/reportes/components/evolucion-reclamos-chart"
+import { DistribucionEstadosChart } from "@/features/dashboard/empleado/reportes/components/distribucion-estados-chart"
 import "@/features/dashboard/cliente/reportes/components/charts.css"
 
-export default function ReportesPage() {
+export default function EmpleadoReportesPage() {
   return (
     <div className="space-y-6 [&_text]:!fill-white [&_.recharts-text]:!fill-white"
       style={{
@@ -14,11 +15,18 @@ export default function ReportesPage() {
       <div>
         <h1 className="text-2xl font-bold text-foreground">Reportes</h1>
         <p className="text-muted-foreground">
-          Visualiza estadísticas de tus reclamos
+          Estadísticas y métricas de reclamos del área
         </p>
       </div>
 
       <div className="space-y-6">
+        <div className="space-y-2">
+          <h2 className="text-lg font-semibold text-foreground">
+            Estadísticas del Área
+          </h2>
+          <EstadisticasPromedios />
+        </div>
+
         <div className="grid gap-6 md:grid-cols-2">
           <div className="space-y-2">
             <h2 className="text-lg font-semibold text-foreground">

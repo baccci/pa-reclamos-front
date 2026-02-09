@@ -71,6 +71,12 @@ export function ClaimCardEmployee({ claim }: ClaimCardEmployeeProps) {
           >
             Reasignar Área
           </Link>
+          <Link
+            href={`/empleado/detalle-reclamo/${claim.id}`}
+            className="px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground border border-border rounded hover:bg-muted/50 transition-colors"
+          >
+            Ver detalle
+          </Link>
         </div>
       </div>
     </div>
