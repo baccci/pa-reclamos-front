@@ -44,11 +44,11 @@ export const NAVIGATION_ITEMS_BY_ROLE: Record<UserRole, NavigationItem[]> = {
       href: "/empleado/reclamos-area",
       icon: "list",
     },
-    {
+    /* {
       label: "Gestionar Áreas",
       href: "/empleado/areas",
       icon: "settings",
-    },
+    }, */
     {
       label: "Reportes",
       href: "/empleado/reportes",
