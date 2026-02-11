@@ -65,12 +65,22 @@ export function ClaimCardEmployee({ claim }: ClaimCardEmployeeProps) {
               Cambiar estado
             </Link>
           )}
-          <Link
-            href={`/empleado/reasignar-area/${claim.id}`}
-            className="px-3 py-1.5 text-xs font-medium text-primary hover:text-primary/80 border border-primary/20 rounded hover:bg-primary/5 transition-colors"
-          >
-            Reasignar Área
-          </Link>
+          {isResolved ? (
+            <button
+              type="button"
+              disabled
+              className="px-3 py-1.5 text-xs font-medium text-muted-foreground border border-border rounded cursor-not-allowed opacity-60"
+            >
+              Reasignar Área
+            </button>
+          ) : (
+            <Link
+              href={`/empleado/reasignar-area/${claim.id}`}
+              className="px-3 py-1.5 text-xs font-medium text-primary hover:text-primary/80 border border-primary/20 rounded hover:bg-primary/5 transition-colors"
+            >
+              Reasignar Área
+            </Link>
+          )}
           <Link
             href={`/empleado/detalle-reclamo/${claim.id}`}
             className="px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground border border-border rounded hover:bg-muted/50 transition-colors"

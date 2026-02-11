@@ -24,7 +24,7 @@ const PRIORITY_COLORS: Record<string, string> = {
   BAJA: "bg-green-500/20 text-green-400",
 }
 
-export function ReclamoDetailShell({ reclamoId, variant} : ReclamoDetailShellProps) {
+export function ReclamoDetailShell({ reclamoId, variant }: ReclamoDetailShellProps) {
   const {
     data: reclamo,
     isLoading: reclamoLoading,
@@ -105,10 +105,19 @@ export function ReclamoDetailShell({ reclamoId, variant} : ReclamoDetailShellPro
       )}
 
       {variant === "reasignar-area" && (
-        <ReasignarAreaForm
-          reclamoId={reclamoId}
-          currentAreaId={reclamo.areaId || currentCambioEstado?.area?.id}
-        />
+        reclamo.status === "resolved" ? (
+          <div className="bg-card rounded-xl p-6 space-y-2">
+            <h3 className="text-lg font-semibold text-foreground">Reasignar área</h3>
+            <p className="text-sm text-muted-foreground">
+              Este reclamo ya está resuelto y no admite más cambios.
+            </p>
+          </div>
+        ) : (
+          <ReasignarAreaForm
+            reclamoId={reclamoId}
+            currentAreaId={reclamo.areaId || currentCambioEstado?.area?.id}
+          />
+        )
       )}
 
       <div className="space-y-4">
