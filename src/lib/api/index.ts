@@ -16,15 +16,23 @@ const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL?.trim()
 
 const FALLBACK_LOCAL_URLS = ["http://localhost:3001", "http://localhost:4000"]
 
+const isDev = process.env.NODE_ENV === "development"
+
 function getBaseUrlCandidates(): string[] {
   if (typeof window === "undefined") {
     return [BASE_URL ?? ""]
   }
 
-  const candidates = [BASE_URL, ...FALLBACK_LOCAL_URLS]
-    .filter((value): value is string => Boolean(value))
+  if (BASE_URL) {
+    return [BASE_URL]
+  }
 
-  return [...new Set(candidates)]
+  // Solo usar fallbacks a localhost en desarrollo
+  if (isDev) {
+    return FALLBACK_LOCAL_URLS
+  }
+
+  return []
 }
 
 if (!BASE_URL) {
@@ -220,37 +228,25 @@ export const api = {
         token,
       }),
     
-    updateEstado(id: string, data: any, token: string) {
-      return fetch(`${BASE_URL}/reclamo/change-estado/${id}`, {
+    updateEstado: (id: string, data: Record<string, unknown>, token: string) =>
+      request(`/reclamo/change-estado/${id}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
-      }).then(r => r.json())
-      },
+        body: data,
+        token,
+      }),
 
-    reassignArea(id: string, data: any, token: string) {
-      return fetch(`${BASE_URL}/reclamo/reassign-area/${id}`, {
+    reassignArea: (id: string, data: Record<string, unknown>, token: string) =>
+      request(`/reclamo/reassign-area/${id}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
-      }).then(r => r.json())
-    },
+        body: data,
+        token,
+      }),
 
-    obtenerPorId(id: string, token: string) {
-      return fetch(`${BASE_URL}/reclamo/${id}`, {
+    obtenerPorId: (id: string, token: string) =>
+      request(`/reclamo/${id}`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }).then(r => r.json())
-    },
+        token,
+      }),
 
     filtros: (
       params: {
